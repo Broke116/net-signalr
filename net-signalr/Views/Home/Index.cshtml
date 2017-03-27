@@ -1,0 +1,78 @@
+﻿@*@model List<StockExchange.Models.StockModel>*@
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@*<div id="myCarousel">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Stock Name</th>
+                <th>Last Price</th>
+                <th>Buying Price</th>
+                <th>Sales Price</th>
+                <th>Daily Low</th>
+                <th>Daily High</th>
+                <th>Daily Change</th>
+                <th>Daily Capacity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td id="StockName@(item.StockName)"><a href="/show/@item.StockName.Replace(' ','-')/">@item.StockName</a> <span class="s up"></span></td>
+                    <td id="LastPrice@(item.LastPrice)">@item.LastPrice</td>
+                    <td id="BuyingPrice@(item.BuyingPrice)">@item.BuyingPrice</td>
+                    <td id="SalesPrice@(item.SalesPrice)">@item.SalesPrice</td>
+                    <td id="DailyLow@(item.DailyLow)">@item.DailyLow</td>
+                    <td id="DailyHigh@(item.DailyHigh)">@item.DailyHigh</td>
+                    <td id="DailyChange@(item.DailyChange)">@item.DailyChange</td>
+                    <td id="DailyCapacity@(item.DailyCapacity)">@item.DailyCapacity</td>
+                    <td><a href="#myModal" data-toggle="modal" data-stock-id="@item.StockId">Edit</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit details</h4>
+            </div>
+            <form action="/" method="POST">
+                <div class="modal-body">            
+                       <input id="stockId" name="stockId" type="hidden">     
+                        <div class="form-group">
+                            <label for="tname">Stock name</label>
+                            <input type="text" class="form-control" id="StockName" name="StockName" placeholder="Stock Name">
+                        </div>             
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Save changes" />
+                </div>
+            </form>
+            </div>
+        </div>
+</div>*@
+
+<div class="row">
+    <div class="col-md-3">
+        aaa
+    </div>
+    <div class="col-md-3">
+        
+    </div>
+    <div class="col-md-3">
+        
+    </div>
+    <div class="col-md-3">
+        
+    </div>
+</div>

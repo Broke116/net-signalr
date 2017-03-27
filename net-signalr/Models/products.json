@@ -1,0 +1,12 @@
+[
+  {
+    "ProductID": "1",
+    "ProductName": "Suit",
+    "Price": "11.15"
+  },
+  {
+    "ProductID": "2",
+    "ProductName": "Battery",
+    "Price": "41.15"
+  }
+]
