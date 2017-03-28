@@ -2,11 +2,15 @@
   {
     "ProductID": "1",
     "ProductName": "Suit",
-    "Price": "11.15"
+    "Category": "Cloth",
+    "Price": 11.15,
+    "Quantity": 5
   },
   {
     "ProductID": "2",
     "ProductName": "Battery",
-    "Price": "41.15"
+    "Category": "Technology",
+    "Price": 41.15,
+    "Quantity": 10
   }
 ]

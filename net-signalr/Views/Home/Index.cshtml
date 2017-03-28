@@ -1,21 +1,17 @@
-﻿@*@model List<StockExchange.Models.StockModel>*@
+﻿@model List<net_signalr.Models.Product>
 
 @{
     ViewData["Title"] = "Home Page";
 }
-
-@*<div id="myCarousel">
+<br />
+<div id="tableSection">
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Stock Name</th>
-                <th>Last Price</th>
-                <th>Buying Price</th>
-                <th>Sales Price</th>
-                <th>Daily Low</th>
-                <th>Daily High</th>
-                <th>Daily Change</th>
-                <th>Daily Capacity</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Quantity</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,15 +19,11 @@
             @foreach(var item in Model)
             {
                 <tr>
-                    <td id="StockName@(item.StockName)"><a href="/show/@item.StockName.Replace(' ','-')/">@item.StockName</a> <span class="s up"></span></td>
-                    <td id="LastPrice@(item.LastPrice)">@item.LastPrice</td>
-                    <td id="BuyingPrice@(item.BuyingPrice)">@item.BuyingPrice</td>
-                    <td id="SalesPrice@(item.SalesPrice)">@item.SalesPrice</td>
-                    <td id="DailyLow@(item.DailyLow)">@item.DailyLow</td>
-                    <td id="DailyHigh@(item.DailyHigh)">@item.DailyHigh</td>
-                    <td id="DailyChange@(item.DailyChange)">@item.DailyChange</td>
-                    <td id="DailyCapacity@(item.DailyCapacity)">@item.DailyCapacity</td>
-                    <td><a href="#myModal" data-toggle="modal" data-stock-id="@item.StockId">Edit</td>
+                    <td id="ProductName@(item.ProductName)"><a href="/show/@item.ProductID/">@item.ProductName</a> <span class="s up"></span></td>
+                    <td id="Category@(item.Category)">@item.Category</td>
+                    <td id="Price@(item.Price)">@item.Price</td>
+                    <td id="Quantity@(item.Quantity)">@item.Quantity</td>
+                    <td><a href="#myModal" data-toggle="modal" data-prod-id="@item.ProductID">Edit</td>
                 </tr>
             }
         </tbody>
@@ -47,10 +39,10 @@
             </div>
             <form action="/" method="POST">
                 <div class="modal-body">            
-                       <input id="stockId" name="stockId" type="hidden">     
+                       <input id="productId" name="productId" type="hidden">     
                         <div class="form-group">
-                            <label for="tname">Stock name</label>
-                            <input type="text" class="form-control" id="StockName" name="StockName" placeholder="Stock Name">
+                            <label for="tname">Product name</label>
+                            <input type="text" class="form-control" id="ProductName" name="ProductName" placeholder="Product Name">
                         </div>             
                 </div>
                 <div class="modal-footer">
@@ -60,11 +52,11 @@
             </form>
             </div>
         </div>
-</div>*@
+</div>
 
 <div class="row">
     <div class="col-md-3">
-        aaa
+        
     </div>
     <div class="col-md-3">
         

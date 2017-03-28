@@ -1,20 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Newtonsoft.Json;
+﻿using System.Web.Mvc;
+using net_signalr.Services;
 using net_signalr.Models;
 
 namespace net_signalr.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
+        DataService service;
+
+        public HomeController()
+        {
+            service = new DataService();
+        }
+
+        [HttpGet]
         public ActionResult Index()
         {
-            var model = JsonConvert.DeserializeObject<List<Product>>(System.IO.File.ReadAllText("Models/products.json"));
-            return View();
+            var products = service.GetData();
+
+            return View(products);
+        }
+
+        [Route("product/{productId}")]
+        public Product Index(int productId)
+        {
+            var product = service.Get(productId);
+
+            return product;
         }
     }
 }
