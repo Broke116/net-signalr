@@ -1,16 +1,16 @@
 [
   {
-    "ProductID": "1",
+    "ProductID": 1,
     "ProductName": "Suit",
     "Category": "Cloth",
     "Price": 11.15,
     "Quantity": 5
   },
   {
-    "ProductID": "2",
+    "ProductID": 2,
     "ProductName": "Battery",
     "Category": "Technology",
-    "Price": 41.15,
-    "Quantity": 10
+    "Price": 81.9,
+    "Quantity": 100
   }
 ]

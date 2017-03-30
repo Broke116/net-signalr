@@ -10,7 +10,7 @@
             <tr>
                 <th>Product Name</th>
                 <th>Category</th>
-                <th>Price</th>
+                <th>Price (₺)</th>
                 <th>Quantity</th>
                 <th>Actions</th>
             </tr>
@@ -21,37 +21,26 @@
                 <tr>
                     <td id="ProductName@(item.ProductName)"><a href="/show/@item.ProductID/">@item.ProductName</a> <span class="s up"></span></td>
                     <td id="Category@(item.Category)">@item.Category</td>
-                    <td id="Price@(item.Price)">@item.Price</td>
+                    <td id="Price@(item.Price)">@item.Price (₺)</td>
                     <td id="Quantity@(item.Quantity)">@item.Quantity</td>
-                    <td><a href="#myModal" data-toggle="modal" data-prod-id="@item.ProductID">Edit</td>
+                    <td><button type="button" class="form-control btn-primary edit-product" data-target=".bs-example-modal-lg" data-toggle="modal" data-id="@item.ProductID">Edit</button></td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Edit details</h4>
+<div class="modal fade bs-example-modal-lg" id="edit-product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        @using (Html.BeginForm("UpdateProduct", "Home", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div id="edit-product-container" class="modal-content">
+                
             </div>
-            <form action="/" method="POST">
-                <div class="modal-body">            
-                       <input id="productId" name="productId" type="hidden">     
-                        <div class="form-group">
-                            <label for="tname">Product name</label>
-                            <input type="text" class="form-control" id="ProductName" name="ProductName" placeholder="Product Name">
-                        </div>             
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-primary" value="Save changes" />
-                </div>
-            </form>
-            </div>
-        </div>
+        }
+    </div>
 </div>
 
 <div class="row">
@@ -68,3 +57,35 @@
         
     </div>
 </div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.edit-product').click(function () {
+                var url = "/Home/GetProductDetail";
+                var id = $(this).attr('data-id');
+                $.get(url + '/' + id, function (data) {
+                    $('#edit-product').modal('show');
+                    $('#edit-product-container').html(data);
+                });
+            });
+        });
+
+        $(document).on('click', '.btnSubmit', function () {
+            var self = $(this);
+            $.ajax({
+                url: '/Home/UpdateProduct',
+                type: 'POST',
+                data: self.closest('form').serialize(),
+                success: function (data) {
+                    if (data.success == true) {
+                        $('#edit-product').modal('hide');
+                        location.reload(false);
+                    } else {
+                        $('#edit-product').html(data);
+                    }
+                }
+            });
+        });
+    </script>
+}
