@@ -6,6 +6,7 @@ using net_signalr.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace net_signalr.Controllers
 {
@@ -46,44 +47,50 @@ namespace net_signalr.Controllers
         public ActionResult UpdateProduct(Product model)
         {
             string output = "";
+
             if (ModelState.IsValid)
             {
-                //var updatedProduct = new Product
-                //{
-                //    ProductID = model.ProductID,
-                //    ProductName = model.ProductName,
-                //    Category = model.Category,
-                //    Price = model.Price,
-                //    Quantity = model.Quantity
-                //};
-
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models/products.json");
-                using (var r = new StreamReader(path))
+                try
                 {
-                    var json = r.ReadToEnd();
-                    var jsonObj = JsonConvert.DeserializeObject<List<Product>>(json);
+                    var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models/products.json");
 
-                    foreach(var val in jsonObj)
+                    using (var streamRead = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
-                        if(val.ProductID == model.ProductID)
+                        var r = new StreamReader(streamRead);
+
+                        var json = r.ReadToEnd();
+                        var jsonObj = JsonConvert.DeserializeObject<List<Product>>(json);
+
+                        foreach (var val in jsonObj)
                         {
-                            val.ProductName = model.ProductName;
-                            val.Category = model.Category;
-                            val.Price = model.Price;
-                            val.Quantity = model.Quantity;
+                            if (val.ProductID == model.ProductID)
+                            {
+                                val.ProductName = model.ProductName;
+                                val.Category = model.Category;
+                                val.Price = model.Price;
+                                val.Quantity = model.Quantity;
+                            }
                         }
+
+                        output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+
+                        r.Close();
+                        streamRead.Close();
                     }
 
-                    output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
-                    r.Close();
+                    using (var streamWrite = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.ReadWrite))
+                    {
+                        var w = new StreamWriter(streamWrite);
+                        w.Write(output);
+
+                        w.Close();
+                        streamWrite.Close();
+                    }
                 }
-                
-                using (var w = new StreamWriter(path))
+                catch (IOException e)
                 {
-                    w.Write(output);
-                    w.Close();
-                }
-                //System.IO.File.WriteAllText(path, output);
+                    throw e;
+                }                
             }
 
             return RedirectToAction("Index", "Home");
