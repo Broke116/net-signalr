@@ -18,10 +18,10 @@
         <tbody>
             @foreach(var item in Model)
             {
-                <tr>
+                <tr id="Product@(item.ProductID)">
                     <td id="ProductName@(item.ProductID)"><a href="/show/@item.ProductID/">@item.ProductName</a> <span class="s up"></span></td>
                     <td id="Category@(item.ProductID)">@item.Category</td>
-                    <td id="Price@(item.ProductID)">@item.Price (₺)</td>
+                    <td id="Price@(item.ProductID)"><span id="priceVal">@item.Price</span> (₺)</td>
                     <td id="Quantity@(item.ProductID)">@item.Quantity</td>
                     <td><button type="button" class="form-control btn-primary edit-product" data-target=".bs-example-modal-lg" data-toggle="modal" data-id="@item.ProductID">Edit</button></td>
                 </tr>
@@ -44,22 +44,15 @@
 </div>
 
 <div class="row">
-    <div class="col-md-3">
-        <span id="notification"></span>        
-    </div>
-    <div class="col-md-3">
-        
-    </div>
-    <div class="col-md-3">
-        
-    </div>
-    <div class="col-md-3">
-        
+    <div id="notify" class="alert alert-success">
+        <p>Updated value belong to this ProductID = <span id="productId"></span></p>
     </div>
 </div>
 
 @section scripts {
     <script type="text/javascript">
+        document.getElementById("notify").style.visibility = 'hidden';
+
         function ProductData() {
             this.ProductID;
             this.ProductName;
@@ -73,8 +66,18 @@
         $.connection.hub.start();
 
         productHub.client.applyChanges = function (product) {
-            document.getElementById("notification").innerHTML = product.ProductID;
-            document.getElementById("Price" + product.ProductID + "").innerHTML = product.Price;
+            document.getElementById("productId").innerHTML = product.ProductID;
+            document.getElementById("ProductName" + product.ProductID + "").innerHTML = product.ProductName;
+            document.getElementById("Category" + product.ProductID + "").innerHTML = product.Category;
+            document.getElementById("priceVal").innerHTML = product.Price;
+            document.getElementById("Quantity" + product.ProductID + "").innerHTML = product.Quantity;
+            $("#Product" + product.ProductID).slideUp(200).css("background-color", "red").fadeIn(1000);
+            document.getElementById("notify").style.visibility = 'visible';
+
+            window.setTimeout(function () {
+                $("#Product" + product.ProductID).hide().css("background-color", "").fadeIn(1000);
+                document.getElementById("notify").style.visibility = 'hidden';
+            }, 2000);
         };
 
         $(document).ready(function () {
@@ -99,12 +102,6 @@
                 success: function (data) {
                     if (data.success == true) {
                         $('#edit-product').modal('hide');
-                        //console.log("deneme: " + data);
-                        //window.alert(data);
-                        //
-                        //product = data;
-                        //console.log("data " + product);
-                        //productHub.server.hello();
                         location.reload(false);
                     } else {
                         $('#edit-product').html(data);
@@ -113,14 +110,12 @@
             });
         });
 
-        function arrayToObject(formArray) {//serialize data function
+        function arrayToObject(formArray) {
             var returnArray = {};
             for (var i = 0; i < formArray.length; i++) {
                 returnArray[formArray[i]['name']] = formArray[i]['value'];
             }
             return returnArray;
         }
-
-        //$.connection.hub.start();
     </script>
 }

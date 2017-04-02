@@ -4,13 +4,27 @@
     "ProductName": "Suit",
     "Category": "Cloth",
     "Price": 11.15,
-    "Quantity": 5
+    "Quantity": 60
   },
   {
     "ProductID": 2,
     "ProductName": "Battery",
     "Category": "Technology",
-    "Price": 90.8,
+    "Price": 80.8,
     "Quantity": 100
+  },
+  {
+    "ProductID": 2,
+    "ProductName": "Football ball",
+    "Category": "Sports",
+    "Price": 40.4,
+    "Quantity": 20
+  },
+  {
+    "ProductID": 2,
+    "ProductName": "Treadmill",
+    "Category": "Sports",
+    "Price": 800.8,
+    "Quantity": 2
   }
 ]
