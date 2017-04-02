@@ -19,10 +19,10 @@
             @foreach(var item in Model)
             {
                 <tr>
-                    <td id="ProductName@(item.ProductName)"><a href="/show/@item.ProductID/">@item.ProductName</a> <span class="s up"></span></td>
-                    <td id="Category@(item.Category)">@item.Category</td>
-                    <td id="Price@(item.Price)">@item.Price (₺)</td>
-                    <td id="Quantity@(item.Quantity)">@item.Quantity</td>
+                    <td id="ProductName@(item.ProductID)"><a href="/show/@item.ProductID/">@item.ProductName</a> <span class="s up"></span></td>
+                    <td id="Category@(item.ProductID)">@item.Category</td>
+                    <td id="Price@(item.ProductID)">@item.Price (₺)</td>
+                    <td id="Quantity@(item.ProductID)">@item.Quantity</td>
                     <td><button type="button" class="form-control btn-primary edit-product" data-target=".bs-example-modal-lg" data-toggle="modal" data-id="@item.ProductID">Edit</button></td>
                 </tr>
             }
@@ -45,7 +45,7 @@
 
 <div class="row">
     <div class="col-md-3">
-        
+        <span id="notification"></span>        
     </div>
     <div class="col-md-3">
         
@@ -60,6 +60,23 @@
 
 @section scripts {
     <script type="text/javascript">
+        function ProductData() {
+            this.ProductID;
+            this.ProductName;
+            this.Category;
+            this.Price;
+            this.Quantity;
+        };
+
+        var productHub = $.connection.productHub;
+        $.connection.hub.logging = true;
+        $.connection.hub.start();
+
+        productHub.client.applyChanges = function (product) {
+            document.getElementById("notification").innerHTML = product.ProductID;
+            document.getElementById("Price" + product.ProductID + "").innerHTML = product.Price;
+        };
+
         $(document).ready(function () {
             $('.edit-product').click(function () {
                 var url = "/Home/GetProductDetail";
@@ -73,6 +90,8 @@
 
         $(document).on('click', '.btnSubmit', function () {
             var self = $(this);
+            var postData = self.closest('form').serializeArray();
+            productHub.server.update(arrayToObject(postData));
             $.ajax({
                 url: '/Home/UpdateProduct',
                 type: 'POST',
@@ -80,6 +99,12 @@
                 success: function (data) {
                     if (data.success == true) {
                         $('#edit-product').modal('hide');
+                        //console.log("deneme: " + data);
+                        //window.alert(data);
+                        //
+                        //product = data;
+                        //console.log("data " + product);
+                        //productHub.server.hello();
                         location.reload(false);
                     } else {
                         $('#edit-product').html(data);
@@ -87,5 +112,15 @@
                 }
             });
         });
+
+        function arrayToObject(formArray) {//serialize data function
+            var returnArray = {};
+            for (var i = 0; i < formArray.length; i++) {
+                returnArray[formArray[i]['name']] = formArray[i]['value'];
+            }
+            return returnArray;
+        }
+
+        //$.connection.hub.start();
     </script>
 }

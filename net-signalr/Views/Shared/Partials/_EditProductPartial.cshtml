@@ -8,22 +8,22 @@
     @Html.HiddenFor(model => model.ProductID, new { id = "productId", name = "productId" })
     <div class="form-group">
         @Html.LabelFor(model => model.ProductName, new { @class = "control-label" })
-        @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control text-center" })
+        @Html.TextBoxFor(model => model.ProductName, new { id = "productName", @class = "form-control text-center" })
         @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Category, new { @class = "control-label" })
-        @Html.TextBoxFor(model => model.Category, new { @class = "form-control text-center" })
+        @Html.TextBoxFor(model => model.Category, new { id = "productCategory", @class = "form-control text-center" })
         @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Price, new { @class = "control-label" })
-        @Html.TextBoxFor(model => model.Price, new { @class = "form-control text-center" })
+        @Html.TextBoxFor(model => model.Price, new { id = "productPrice", @class = "form-control text-center" })
         @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Quantity, new { @class = "control-label" })
-        @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control text-center" })
+        @Html.TextBoxFor(model => model.Quantity, new { id = "productQuantity", @class = "form-control text-center" })
         @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
     </div>
 </div>
@@ -34,9 +34,30 @@
 
 @section scripts {
 <script type="text/javascript">
-        $('#buttonEdit').submit(function () {
-            $('#edit-product').modal('hide');
-            return false;
-        });
+    $(document).on('click', '#buttonEdit', function () {
+        $('#edit-product').modal('hide');        
+        //var $productId = $('#productId');
+        //var $productName = $('#productName');
+        //var $productCategory = $('#productCategory');
+        //var $productPrice = $('#productPrice');
+        //var $productQuantity = $('#productQuantity');
+
+        //var product = { ProductID: $productId.val(), ProductName: $productName.val(), Category: $productCategory.val(), Price: $productPrice.val(), Quantity: $productQuantity.val() };
+        
+        //productHub.server.update(product);
+
+        return false;
+    });
+    //$(function () {
+        //var productHub = $.connection.productHub;
+        
+        //$.connection.hub.start().done(function () {
+        //    $("#buttonEdit").click(function () {
+        //        $('#edit-product').modal('hide');
+        //        console.log("aaa: " + product);
+        //        productHub.server.update(product);
+        //    });
+        //});
+    //});
 </script>
 }

@@ -4,9 +4,9 @@ using System.Web.Mvc;
 using net_signalr.Services;
 using net_signalr.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR;
+using net_signalr.Hubs;
 
 namespace net_signalr.Controllers
 {
@@ -90,7 +90,7 @@ namespace net_signalr.Controllers
                 catch (IOException e)
                 {
                     throw e;
-                }                
+                }         
             }
 
             return RedirectToAction("Index", "Home");
