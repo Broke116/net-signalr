@@ -29,35 +29,14 @@
 </div>
 <div class="modal-footer">
     <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
-    <button id="buttonEdit" type="submit" class="btn btn-primary btnSubmit">Save Changes</button>
+    <button id="buttonEdit" type="submit" class="btn btn-primary btnSubmitUpdate">Save Changes</button>
 </div>
 
 @section scripts {
 <script type="text/javascript">
     $(document).on('click', '#buttonEdit', function () {
         $('#edit-product').modal('hide');        
-        //var $productId = $('#productId');
-        //var $productName = $('#productName');
-        //var $productCategory = $('#productCategory');
-        //var $productPrice = $('#productPrice');
-        //var $productQuantity = $('#productQuantity');
-
-        //var product = { ProductID: $productId.val(), ProductName: $productName.val(), Category: $productCategory.val(), Price: $productPrice.val(), Quantity: $productQuantity.val() };
-        
-        //productHub.server.update(product);
-
         return false;
     });
-    //$(function () {
-        //var productHub = $.connection.productHub;
-        
-        //$.connection.hub.start().done(function () {
-        //    $("#buttonEdit").click(function () {
-        //        $('#edit-product').modal('hide');
-        //        console.log("aaa: " + product);
-        //        productHub.server.update(product);
-        //    });
-        //});
-    //});
 </script>
 }

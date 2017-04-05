@@ -1,28 +1,36 @@
-﻿using net_signalr.Models;
-using Newtonsoft.Json;
-using System;
+﻿using DAL.Repositories;
+using DAL.Models;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using net_signalr.Models;
 
 namespace net_signalr.Services
 {
     public class DataService
     {
-        public DataService() { }
-
-        public List<Product> GetData()
+        private readonly IGenericRepository<Product> _productRepository;
+        public DataService()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models/products.json");
-            using(var r = new StreamReader(path))
-            {
-                var json = r.ReadToEnd();
-                var model = JsonConvert.DeserializeObject<List<Product>>(json);
-                return model;
-            }
+            _productRepository = new GenericRepository<Product>();
         }
 
-        public Product Get(int productId)
+        public List<ProductViewModel> GetData()
+        {
+            var products = _productRepository.GetAll()
+                .Select(p => new ProductViewModel
+                {
+                    ProductID = p.ProductID,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    Quantity = p.Quantity,
+                    Category = p.Category
+                })
+                .ToList();
+
+            return products;
+        }
+
+        public ProductViewModel Get(int productId)
         {
             var product = GetData();
             return product.Where(p => p.ProductID == productId).FirstOrDefault();

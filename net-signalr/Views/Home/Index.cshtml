@@ -1,4 +1,4 @@
-﻿@model List<net_signalr.Models.Product>
+﻿@model List<net_signalr.Models.ProductViewModel>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -20,7 +20,7 @@
             {
                 <tr id="Product@(item.ProductID)">
                     <td id="ProductName@(item.ProductID)"><a href="/show/@item.ProductID/">@item.ProductName</a> <span class="s up"></span></td>
-                    <td id="Category@(item.ProductID)">@item.Category</td>
+                    <td id="Category@(item.ProductID)">@item.Category.CategoryName</td>
                     <td id="Price@(item.ProductID)"><span id="priceVal">@item.Price</span> (₺)</td>
                     <td id="Quantity@(item.ProductID)">@item.Quantity</td>
                     <td><button type="button" class="form-control btn-primary edit-product" data-target=".bs-example-modal-lg" data-toggle="modal" data-id="@item.ProductID">Edit</button></td>
@@ -43,9 +43,26 @@
     </div>
 </div>
 
+<div class="modal fade bs-insert-modal-lg" id="insert-product" tabindex="-1" role="dialog" aria-labelledby="myModalLabelinsert">
+    <div class="modal-dialog" role="document">
+        @using (Html.BeginForm("InsertProduct", "Home", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div id="insert-product-container" class="modal-content">
+
+            </div>
+        }
+    </div>
+</div>
+
 <div class="row">
+    <div id="newProduct">
+        <a class="insert-product" data-target=".bs-insert-modal-lg" data-toggle="modal">Add New Product</a>
+    </div>
+    <br/>
     <div id="notify" class="alert alert-success">
-        <p>Updated value belong to this ProductID = <span id="productId"></span></p>
+        <p>Updated value belongs to this ProductID = <span id="productId"></span></p>
     </div>
 </div>
 
@@ -77,7 +94,7 @@
             window.setTimeout(function () {
                 $("#Product" + product.ProductID).hide().css("background-color", "").fadeIn(1000);
                 document.getElementById("notify").style.visibility = 'hidden';
-            }, 2000);
+            }, 4000);
         };
 
         $(document).ready(function () {
@@ -89,12 +106,19 @@
                     $('#edit-product-container').html(data);
                 });
             });
+
+            $('.insert-product').click(function () {
+                var url = "/Home/GetProductModal";
+                $.get(url, function (data) {
+                    $('#insert-product').modal('show');
+                });
+            });
         });
 
-        $(document).on('click', '.btnSubmit', function () {
+        $(document).on('click', '.btnSubmitUpdate', function () {
             var self = $(this);
             var postData = self.closest('form').serializeArray();
-            productHub.server.update(arrayToObject(postData));
+            productHub.server.update(arrayToObject(postData)); // call server(producthub) update method when button submitted
             $.ajax({
                 url: '/Home/UpdateProduct',
                 type: 'POST',
@@ -110,7 +134,7 @@
             });
         });
 
-        function arrayToObject(formArray) {
+        function arrayToObject(formArray) { // convert form arraya to object
             var returnArray = {};
             for (var i = 0; i < formArray.length; i++) {
                 returnArray[formArray[i]['name']] = formArray[i]['value'];

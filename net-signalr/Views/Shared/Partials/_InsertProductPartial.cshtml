@@ -1,0 +1,36 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">Insert Product</h4>
+</div>
+<div class="modal-body">
+
+    <div class="form-group">
+        @Html.Label("Product Name", "Product Name",  new { @class = "control-label" })
+        @Html.TextBox("ProductName", "Product name" , new { id = "ProductName", @class = "form-control text-center" })
+    </div>
+    <div class="form-group">
+        @Html.Label("Category", "Category", new { @class = "control-label" })
+        @Html.TextBox("Category", "Category", new { id = "Category", @class = "form-control text-center" })
+    </div>
+    <div class="form-group">
+        @Html.Label("Price", "Price", new { @class = "control-label" })
+        @Html.TextBox("Price", "Price", new { id = "Price", @class = "form-control text-center" })
+    </div>
+    <div class="form-group">
+        @Html.Label("Quantity", "Quantity", new { @class = "control-label" })
+        @Html.TextBox("Quantity", "Quantity", new { id = "Quantity", @class = "form-control text-center" })
+    </div>
+</div>
+<div class="modal-footer">
+    <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+    <button id="buttonInsert" type="submit" class="btn btn-primary btnSubmitInsert">Save Changes</button>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+    $(document).on('click', '#buttonInsert', function () {
+        $('#insert-product').modal('hide');
+        return false;
+    });
+    </script>
+}

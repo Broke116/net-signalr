@@ -2,11 +2,11 @@
 using System.IO;
 using System.Web.Mvc;
 using net_signalr.Services;
-using net_signalr.Models;
+//using net_signalr.Models;
+using DAL.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using Microsoft.AspNet.SignalR;
-using net_signalr.Hubs;
+using net_signalr.Models;
 
 namespace net_signalr.Controllers
 {
@@ -28,11 +28,17 @@ namespace net_signalr.Controllers
         }
 
         [Route("product/{productId}")]
-        public Product Index(int productId)
+        public ProductViewModel Index(int productId)
         {
             var product = service.Get(productId);
 
             return product;
+        }
+
+        [HttpGet]
+        public ActionResult GetProductModal()
+        {
+            return PartialView("Partials/_InsertProductPartial");
         }
 
         [HttpGet]
@@ -54,6 +60,7 @@ namespace net_signalr.Controllers
                 {
                     var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models/products.json");
 
+                    #region read from file
                     using (var streamRead = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
                         var r = new StreamReader(streamRead);
@@ -77,7 +84,9 @@ namespace net_signalr.Controllers
                         r.Close();
                         streamRead.Close();
                     }
+                    #endregion
 
+                    #region write changes to file
                     using (var streamWrite = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.ReadWrite))
                     {
                         var w = new StreamWriter(streamWrite);
@@ -86,13 +95,20 @@ namespace net_signalr.Controllers
                         w.Close();
                         streamWrite.Close();
                     }
+                    #endregion
                 }
                 catch (IOException e)
                 {
                     throw e;
-                }         
+                }
             }
 
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult InsertProduct(Product model)
+        {
             return RedirectToAction("Index", "Home");
         }
     }

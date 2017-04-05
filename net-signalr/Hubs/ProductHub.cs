@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNet.SignalR;
-using net_signalr.Models;
+﻿using DAL.Models;
+using Microsoft.AspNet.SignalR;
 
 namespace net_signalr.Hubs
 {
