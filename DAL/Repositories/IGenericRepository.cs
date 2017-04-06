@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace DAL.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {
-        IQueryable<T> All { get; }
         IQueryable<T> GetAll();
-        T GetById(object id);
+        IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
+        T GetById(int id);
+
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);

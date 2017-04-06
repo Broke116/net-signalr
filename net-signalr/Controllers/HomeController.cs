@@ -28,7 +28,7 @@ namespace net_signalr.Controllers
         }
 
         [Route("product/{productId}")]
-        public ProductViewModel Index(int productId)
+        public Product Index(int productId)
         {
             var product = service.Get(productId);
 
@@ -58,44 +58,7 @@ namespace net_signalr.Controllers
             {
                 try
                 {
-                    var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models/products.json");
-
-                    #region read from file
-                    using (var streamRead = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    {
-                        var r = new StreamReader(streamRead);
-
-                        var json = r.ReadToEnd();
-                        var jsonObj = JsonConvert.DeserializeObject<List<Product>>(json);
-
-                        foreach (var val in jsonObj)
-                        {
-                            if (val.ProductID == model.ProductID)
-                            {
-                                val.ProductName = model.ProductName;
-                                val.Category = model.Category;
-                                val.Price = model.Price;
-                                val.Quantity = model.Quantity;
-                            }
-                        }
-
-                        output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
-
-                        r.Close();
-                        streamRead.Close();
-                    }
-                    #endregion
-
-                    #region write changes to file
-                    using (var streamWrite = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.ReadWrite))
-                    {
-                        var w = new StreamWriter(streamWrite);
-                        w.Write(output);
-
-                        w.Close();
-                        streamWrite.Close();
-                    }
-                    #endregion
+                    service.Update(model);
                 }
                 catch (IOException e)
                 {
