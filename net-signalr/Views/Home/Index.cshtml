@@ -30,6 +30,16 @@
     </table>
 </div>
 
+<div class="row">
+    <div id="newProduct">
+        <a class="insert-product" data-target=".bs-insert-modal-lg" data-toggle="modal">Add New Product</a>
+    </div>
+    <br/>
+    <div id="notify" class="alert alert-success">
+        <p>Updated value belongs to this ProductID = <span id="productId"></span></p>
+    </div>
+</div>
+
 <div class="modal fade bs-example-modal-lg" id="edit-product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         @using (Html.BeginForm("UpdateProduct", "Home", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
@@ -37,7 +47,7 @@
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
             <div id="edit-product-container" class="modal-content">
-                
+
             </div>
         }
     </div>
@@ -53,16 +63,6 @@
 
             </div>
         }
-    </div>
-</div>
-
-<div class="row">
-    <div id="newProduct">
-        <a class="insert-product" data-target=".bs-insert-modal-lg" data-toggle="modal">Add New Product</a>
-    </div>
-    <br/>
-    <div id="notify" class="alert alert-success">
-        <p>Updated value belongs to this ProductID = <span id="productId"></span></p>
     </div>
 </div>
 
@@ -111,6 +111,7 @@
                 var url = "/Home/GetProductModal";
                 $.get(url, function (data) {
                     $('#insert-product').modal('show');
+                    $('#insert-product-container').html(data);
                 });
             });
         });

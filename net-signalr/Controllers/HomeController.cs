@@ -1,11 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Web.Mvc;
 using net_signalr.Services;
-//using net_signalr.Models;
 using DAL.Models;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+using System.Data.Common;
 using net_signalr.Models;
 
 namespace net_signalr.Controllers
@@ -34,13 +31,7 @@ namespace net_signalr.Controllers
 
             return product;
         }
-
-        [HttpGet]
-        public ActionResult GetProductModal()
-        {
-            return PartialView("Partials/_InsertProductPartial");
-        }
-
+        
         [HttpGet]
         public ActionResult GetProductDetail(int id)
         {
@@ -50,17 +41,16 @@ namespace net_signalr.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult UpdateProduct(Product model)
         {
-            string output = "";
-
             if (ModelState.IsValid)
             {
                 try
                 {
                     service.Update(model);
                 }
-                catch (IOException e)
+                catch (DbException e)
                 {
                     throw e;
                 }
@@ -69,9 +59,29 @@ namespace net_signalr.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public ActionResult GetProductModal()
+        {
+            var categories = service.GetCategories();
+            ViewBag.categories = categories;
+            return PartialView("Partials/_InsertProductPartial"/*, model*/);
+        }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult InsertProduct(Product model)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    service.Add(model);
+                }
+                catch (DbException e)
+                {
+                    throw e;
+                }
+            }
             return RedirectToAction("Index", "Home");
         }
     }

@@ -39,7 +39,7 @@ namespace DAL.UnitOfWork
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {

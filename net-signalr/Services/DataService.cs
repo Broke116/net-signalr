@@ -5,10 +5,11 @@ using System.Linq;
 using net_signalr.Models;
 using DAL;
 using DAL.UnitOfWork;
+using System.Web.Mvc;
 
 namespace net_signalr.Services
 {
-    public class DataService
+    public class DataService/*<T> where T : class*/
     {
         private ShopContext _dbContext;
 
@@ -44,8 +45,18 @@ namespace net_signalr.Services
         public Product Get(int productId)
         {
             return _productRepository.GetById(productId);
-            //var product = _productRepository.GetById(productId);
-            //return product.Where(p => p.ProductID == productId).FirstOrDefault();
+        }
+
+        public IEnumerable<SelectListItem> GetCategories()
+        {
+            return _categoryRepository.GetAll().Distinct().ToList()
+                .Select(c => new SelectListItem { Value = c.CategoryID.ToString(), Text = c.CategoryName }).ToList();
+        }
+
+        public void Add(Product model)
+        {
+            _productRepository.Add(model);
+            _uow.SaveChanges();
         }
 
         public void Update(Product model)
@@ -56,15 +67,7 @@ namespace net_signalr.Services
             updatedProduct.ProductName = model.ProductName;
             updatedProduct.Price = model.Price;
             updatedProduct.Quantity = model.Quantity;
-            updatedProduct.Category = model.Category;
-
-            //updatedProduct = new Product
-            //{
-            //    ProductName = model.ProductName,
-            //    Price = model.Price,
-            //    Quantity = model.Quantity,
-            //    Category = model.Category
-            //};
+            updatedProduct.CategoryID = catId.CategoryID;
 
             _productRepository.Update(updatedProduct);
             _uow.SaveChanges();

@@ -19,11 +19,6 @@ namespace DAL.Repositories
             _dbSet = dbContext.Set<T>();
         }
 
-        //protected ShopContext DbContext
-        //{
-        //    get { return _shopContext ?? ( _shopContext = new ShopContext()); }
-        //}
-
         public virtual IQueryable<T> GetAll()
         {
             return _dbSet;
@@ -41,7 +36,7 @@ namespace DAL.Repositories
 
         public void Add(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Add(entity);
         }
 
         public void Update(T entity)
