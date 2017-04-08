@@ -38,8 +38,8 @@
     <div id="notify" class="alert alert-success">
         <p>Updated value belongs to this ProductID = <span id="productId"></span></p>
     </div>
-    <div id="userCount">
-
+    <div id="user">
+        Total users on this page <span id="userCount"></span>
     </div>
 </div>
 
@@ -89,9 +89,8 @@
             console.log(error);
         });
 
-        hubProxy.client.showUserCount = function (data) {
-            console.log(data);
-            $('#userCount').html(userCount);
+        productHub.client.showUserCount = function (data) {
+            $('#userCount').html(data);
         };
 
         productHub.client.applyChanges = function (product) {
