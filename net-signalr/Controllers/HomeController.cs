@@ -69,13 +69,20 @@ namespace net_signalr.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InsertProduct(Product model)
+        public ActionResult InsertProduct(ProductViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    service.Add(model);
+                    var product = new Product
+                    {
+                        ProductName = model.ProductName,
+                        Price = model.Price,
+                        Quantity = model.Quantity,
+                        CategoryID = Convert.ToInt32(model.SelectedCategory)
+                    };
+                    service.Add(product);
                 }
                 catch (DbException e)
                 {

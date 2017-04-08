@@ -13,7 +13,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Category, new { @class = "control-label" })
         @*@Html.TextBoxFor(model => model.Category, new { id = "Category", @class = "form-control text-center" })*@
-        @Html.DropDownList("CategoryList", new SelectList(ViewBag.categories, "Value", "Text"), new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.SelectedCategory, new SelectList(ViewBag.categories, "Value", "Text"), new { @class = "form-control" })
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Price, new { @class = "control-label" })

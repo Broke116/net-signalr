@@ -1,5 +1,4 @@
 ﻿using DAL.Models;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -14,7 +13,10 @@ namespace net_signalr.Models
         public double Price { get; set; }
         public int Quantity { get; set; }
         public int CategoryID { get; set; }
-        
+
+        //public SelectList CategoryList { get; set; }
+        public string SelectedCategory { get; set; }
+
         public Category Category { get; set; }
     }
 }
