@@ -5,7 +5,7 @@
 }
 <br />
 <div id="tableSection">
-    <table class="table table-hover">
+    <table id="productTable" class="table table-hover">
         <thead>
             <tr>
                 <th>Product Name</th>
@@ -37,6 +37,9 @@
     <br/>
     <div id="notify" class="alert alert-success">
         <p>Updated value belongs to this ProductID = <span id="productId"></span></p>
+    </div>
+    <div id="userCount">
+
     </div>
 </div>
 
@@ -80,7 +83,16 @@
 
         var productHub = $.connection.productHub;
         $.connection.hub.logging = true;
-        $.connection.hub.start();
+        $.connection.hub.start().done(function () {
+            console.log("hub.start.done");
+        }).fail(function (error) {
+            console.log(error);
+        });
+
+        hubProxy.client.showUserCount = function (data) {
+            console.log(data);
+            $('#userCount').html(userCount);
+        };
 
         productHub.client.applyChanges = function (product) {
             document.getElementById("productId").innerHTML = product.ProductID;
